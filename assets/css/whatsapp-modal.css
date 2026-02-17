@@ -41,7 +41,7 @@
 }
 
 /* Form Styling */
-#whatsapp-order-form input,
+#whatsapp-order-form input:not([type="checkbox"]):not([type="radio"]),
 #whatsapp-order-form textarea {
     width: 100%;
     padding: 10px;
@@ -51,8 +51,17 @@
     box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
+
 #whatsapp-order-form label {
-    display: block;
-    margin-bottom: 15px;
-    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    text-align: left;
+}
+
+#whatsapp-order-form label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    flex: 0 0 auto;
 }
