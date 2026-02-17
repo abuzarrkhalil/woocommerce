@@ -587,8 +587,9 @@ function wcwa_generate_unique_code() {
     return $code;
 }
 add_action( 'before_woocommerce_init', function() {
-    if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'orders_cache', __FILE__, true );
+    $features_util_class = 'Automattic\\WooCommerce\\Utilities\\FeaturesUtil';
+    if ( class_exists( $features_util_class ) ) {
+        call_user_func( array( $features_util_class, 'declare_compatibility' ), 'custom_order_tables', __FILE__, true );
+        call_user_func( array( $features_util_class, 'declare_compatibility' ), 'orders_cache', __FILE__, true );
     }
 } );
