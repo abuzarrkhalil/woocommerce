@@ -1,0 +1,58 @@
+/* WhatsApp Modal Overlay */
+.whatsapp-modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0,0,0,0.4); /* Black background with opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Content Box */
+.whatsapp-modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%; /* Adjust width for mobile */
+    max-width: 500px; /* Max width for desktop */
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+/* Close Button */
+.whatsapp-close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.whatsapp-close-button:hover,
+.whatsapp-close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form Styling */
+#whatsapp-order-form input,
+#whatsapp-order-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+#whatsapp-order-form label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
