@@ -4,8 +4,8 @@
  * Plugin URI:  https://example.com
  * Description: Allow customers to place orders via WhatsApp using a modal form. Includes admin settings and order logging.
  * Version:     2.0
- * Author:      Your Name
- * Author URI:  https://example.com
+ * Author:      Abuzarr Ghafaari
+ * Author URI:  https://www.codegeniusoft.com
  * Text Domain: whatsapp-woocommerce
  * Domain Path: /languages
  * WC tested up to: 8.0
@@ -13,6 +13,11 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// Prevent duplicate loading (e.g., old + new plugin copies active together).
+if ( defined( 'WCWA_PLUGIN_FILE' ) ) {
+	return;
 }
 
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
@@ -293,9 +298,19 @@ function wcwa_ajax_process_order() {
         wp_send_json_error( array( 'message' => __( 'Invalid destination number.', 'whatsapp-woocommerce' ) ) );
     }
 
-    // Build WhatsApp link.
-    $wa_url = 'https://wa.me/' . rawurlencode( $recipient ) . '?text=' . rawurlencode( $message );
-    wp_send_json_success( array( 'whatsapp_url' => $wa_url ) );
+    // Build WhatsApp links for better cross-device compatibility.
+    $encoded_message = rawurlencode( $message );
+    $wa_url          = 'https://wa.me/' . $recipient . '?text=' . $encoded_message;
+    $api_url         = 'https://api.whatsapp.com/send?phone=' . $recipient . '&text=' . $encoded_message;
+    $web_url         = 'https://web.whatsapp.com/send?phone=' . $recipient . '&text=' . $encoded_message;
+
+    wp_send_json_success(
+        array(
+            'whatsapp_url'     => $wa_url,
+            'whatsapp_api_url' => $api_url,
+            'whatsapp_web_url' => $web_url,
+        )
+    );
 }
 add_action( 'wp_ajax_wcwa_process_order', 'wcwa_ajax_process_order' );
 add_action( 'wp_ajax_nopriv_wcwa_process_order', 'wcwa_ajax_process_order' );
@@ -572,8 +587,9 @@ function wcwa_generate_unique_code() {
     return $code;
 }
 add_action( 'before_woocommerce_init', function() {
-    if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'orders_cache', __FILE__, true );
+    $features_util_class = 'Automattic\\WooCommerce\\Utilities\\FeaturesUtil';
+    if ( class_exists( $features_util_class ) ) {
+        call_user_func( array( $features_util_class, 'declare_compatibility' ), 'custom_order_tables', __FILE__, true );
+        call_user_func( array( $features_util_class, 'declare_compatibility' ), 'orders_cache', __FILE__, true );
     }
 } );

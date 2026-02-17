@@ -73,7 +73,13 @@ jQuery(document).ready(function($) {
 
         $.post(wcwa_ajax.ajax_url, formData, function(response) {
             if (response && response.success && response.data && response.data.whatsapp_url) {
-                window.location.href = response.data.whatsapp_url;
+                // Use api.whatsapp.com for all devices because it reliably
+                // keeps the chat payload and then routes to app/web.
+                if (response.data.whatsapp_api_url) {
+                    window.location.href = response.data.whatsapp_api_url;
+                } else {
+                    window.location.href = response.data.whatsapp_url;
+                }
             } else {
                 var msg = (response && response.data && response.data.message) ? response.data.message : 'There was an error processing your order.';
                 alert(msg);
