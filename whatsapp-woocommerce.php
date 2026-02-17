@@ -4,8 +4,8 @@
  * Plugin URI:  https://example.com
  * Description: Allow customers to place orders via WhatsApp using a modal form. Includes admin settings and order logging.
  * Version:     2.0
- * Author:      Your Name
- * Author URI:  https://example.com
+ * Author:      Abuzarr Ghafaari
+ * Author URI:  https://www.codegeniusoft.com
  * Text Domain: whatsapp-woocommerce
  * Domain Path: /languages
  * WC tested up to: 8.0
@@ -13,6 +13,11 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// Prevent duplicate loading (e.g., old + new plugin copies active together).
+if ( defined( 'WCWA_PLUGIN_FILE' ) ) {
+	return;
 }
 
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
