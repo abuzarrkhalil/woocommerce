@@ -73,7 +73,16 @@ jQuery(document).ready(function($) {
 
         $.post(wcwa_ajax.ajax_url, formData, function(response) {
             if (response && response.success && response.data && response.data.whatsapp_url) {
-                window.location.href = response.data.whatsapp_url;
+                var ua = (window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : '';
+                var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(ua);
+
+                if (!isMobile && response.data.whatsapp_web_url) {
+                    window.location.href = response.data.whatsapp_web_url;
+                } else if (response.data.whatsapp_api_url) {
+                    window.location.href = response.data.whatsapp_api_url;
+                } else {
+                    window.location.href = response.data.whatsapp_url;
+                }
             } else {
                 var msg = (response && response.data && response.data.message) ? response.data.message : 'There was an error processing your order.';
                 alert(msg);

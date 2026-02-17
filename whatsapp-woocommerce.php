@@ -293,9 +293,19 @@ function wcwa_ajax_process_order() {
         wp_send_json_error( array( 'message' => __( 'Invalid destination number.', 'whatsapp-woocommerce' ) ) );
     }
 
-    // Build WhatsApp link.
-    $wa_url = 'https://wa.me/' . rawurlencode( $recipient ) . '?text=' . rawurlencode( $message );
-    wp_send_json_success( array( 'whatsapp_url' => $wa_url ) );
+    // Build WhatsApp links for better cross-device compatibility.
+    $encoded_message = rawurlencode( $message );
+    $wa_url          = 'https://wa.me/' . $recipient . '?text=' . $encoded_message;
+    $api_url         = 'https://api.whatsapp.com/send?phone=' . $recipient . '&text=' . $encoded_message;
+    $web_url         = 'https://web.whatsapp.com/send?phone=' . $recipient . '&text=' . $encoded_message;
+
+    wp_send_json_success(
+        array(
+            'whatsapp_url'     => $wa_url,
+            'whatsapp_api_url' => $api_url,
+            'whatsapp_web_url' => $web_url,
+        )
+    );
 }
 add_action( 'wp_ajax_wcwa_process_order', 'wcwa_ajax_process_order' );
 add_action( 'wp_ajax_nopriv_wcwa_process_order', 'wcwa_ajax_process_order' );
