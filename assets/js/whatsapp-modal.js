@@ -189,7 +189,7 @@ index 89442249cb65f56d403db19143cebb1087012f52..866889b0f5ef3819a1f27e6af5866798
 -
 -        $.post(wcwa_ajax.ajax_url, formData, function(response) {
 -            if (response && response.success && response.data && response.data.whatsapp_url) {
--                window.location.href = response.data.whatsapp_url;
+-                window.open(response.data.whatsapp_url, "_blank", "noopener");
 -            } else {
 -                var msg = (response && response.data && response.data.message) ? response.data.message : 'There was an error processing your order.';
 -                alert(msg);
@@ -279,9 +279,9 @@ index 89442249cb65f56d403db19143cebb1087012f52..866889b0f5ef3819a1f27e6af5866798
 +                // Use api.whatsapp.com for all devices because it reliably
 +                // keeps the chat payload and then routes to app/web.
 +                if (response.data.whatsapp_api_url) {
-+                    window.location.href = response.data.whatsapp_api_url;
++                    window.open(response.data.whatsapp_api_url, "_blank", "noopener");
 +                } else {
-+                    window.location.href = response.data.whatsapp_url;
++                    window.open(response.data.whatsapp_url, "_blank", "noopener");
 +                }
 +            } else {
 +                var msg = (response && response.data && response.data.message) ? response.data.message : 'There was an error processing your order.';
